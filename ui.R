@@ -1,20 +1,5 @@
 
-# NOTES ----
-#
-# created 4/14/2020 by Merritt Aho with support from Jamarius Taylor
-# modeled closely after work shared here https://deliveroo.engineering/2018/10/22/how-to-experiment-rapidly-without-losing-rigour.html
-# install.packages('gsDesign'); require(gsDesign)
-#
-# LIBRARIES ----
-library(shiny)
-library(gsDesign)
-library(formattable)
-library(shinyjs)
-library(shinythemes)
 
-# for local file keeping
-#source('/Users/merrittaho/sequential-test-calculator/service.R') # for local shiny
-#source('service.R') # for web-based shiny
 
 # UI START -----
 ui <- fluidPage(
@@ -22,7 +7,7 @@ ui <- fluidPage(
   # setup shiny js
   useShinyjs(),
   
-    # COMMENT TAG ----
+  # COMMENT TAG ----
   HTML("
     <!-- 
     # If you're curious enough to find this note. We share more than one thing in common. 
@@ -494,24 +479,6 @@ ui <- fluidPage(
                    
                    # SAMPLE SIZE ----
                    # row with sample size outputs
-                   # div(class='outputRow',
-                   #     h5(class="h5output",'Original fixed horizon test sample size (N)'),
-                   #     div(class="field-outputs",
-                   #         verbatimTextOutput("fixedn"),
-                   #     
-                   # 
-                   # div(class="outputIcons",
-                   # actionLink('fixedNi', label = " ", icon = icon('info-circle')),
-                   # hidden(actionLink('fixedNx', label = " ", icon = icon('times'))),
-                   #      ))),
-                   # hidden(
-                   #   p(
-                   #     id = 'fixedNp', class = 'infoP',
-                   #     "This would be your sample size if you ran this as a fixed-horizon test.",
-                   #     "We provide this for comparison purposes only."
-                   #   )
-                   # ),
-                   
                    div(class='outputRow',
                        #h5(class="h5output", 'Sample size details'),
                        div(class="field-outputs sampleBlock",
@@ -534,27 +501,7 @@ ui <- fluidPage(
                      )
                    ),
                    
-                   # div(class='outputRow',
-                   #     h5(class="h5output", 'Max increase in N'),
-                   #     div(class="field-outputs",
-                   #         verbatimTextOutput("nchange"),
-                   #         
-                   #         
-                   #         div(class="outputIcons",
-                   #             actionLink('maxNi', label = " ", icon = icon('info-circle')),
-                   #             hidden(actionLink('maxNx', label = " ", icon = icon('times'))),
-                   #         ))),
-                   # hidden(
-                   #   p(
-                   #     id = 'maxNp', class = 'infoP',
-                   #     "This is not a likely outcome.",
-                   #     tags$a(href="https://cxl.com/blog/peeking-sequential-testing/", target="_blank", 
-                   #            "Click here"),
-                   #     " to learn a bit more about how much savings to expect from a sequential test."
-                   #   )
-                   # ),
-                   
-                   
+
                    # TABLE ----
                    # output for test design table
                    div(id='designTable',

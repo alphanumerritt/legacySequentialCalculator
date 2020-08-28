@@ -1,7 +1,3 @@
-library(shiny)
-library(gsDesign)
-library(formattable)
-
 # FIXED SAMPLE SIZE
 sampleSize <- function(conf, base, mde, tls, pwr) {
   cvrB = base * (1 + mde)
