@@ -479,24 +479,6 @@ ui <- fluidPage(
                    
                    # SAMPLE SIZE ----
                    # row with sample size outputs
-                   # div(class='outputRow',
-                   #     h5(class="h5output",'Original fixed horizon test sample size (N)'),
-                   #     div(class="field-outputs",
-                   #         verbatimTextOutput("fixedn"),
-                   #     
-                   # 
-                   # div(class="outputIcons",
-                   # actionLink('fixedNi', label = " ", icon = icon('info-circle')),
-                   # hidden(actionLink('fixedNx', label = " ", icon = icon('times'))),
-                   #      ))),
-                   # hidden(
-                   #   p(
-                   #     id = 'fixedNp', class = 'infoP',
-                   #     "This would be your sample size if you ran this as a fixed-horizon test.",
-                   #     "We provide this for comparison purposes only."
-                   #   )
-                   # ),
-                   
                    div(class='outputRow',
                        #h5(class="h5output", 'Sample size details'),
                        div(class="field-outputs sampleBlock",
@@ -519,27 +501,7 @@ ui <- fluidPage(
                      )
                    ),
                    
-                   # div(class='outputRow',
-                   #     h5(class="h5output", 'Max increase in N'),
-                   #     div(class="field-outputs",
-                   #         verbatimTextOutput("nchange"),
-                   #         
-                   #         
-                   #         div(class="outputIcons",
-                   #             actionLink('maxNi', label = " ", icon = icon('info-circle')),
-                   #             hidden(actionLink('maxNx', label = " ", icon = icon('times'))),
-                   #         ))),
-                   # hidden(
-                   #   p(
-                   #     id = 'maxNp', class = 'infoP',
-                   #     "This is not a likely outcome.",
-                   #     tags$a(href="https://cxl.com/blog/peeking-sequential-testing/", target="_blank", 
-                   #            "Click here"),
-                   #     " to learn a bit more about how much savings to expect from a sequential test."
-                   #   )
-                   # ),
-                   
-                   
+
                    # TABLE ----
                    # output for test design table
                    div(id='designTable',
