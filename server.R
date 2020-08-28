@@ -1,7 +1,14 @@
+# NOTES ----
+#
+# created 4/14/2020 by Merritt Aho 
+# modeled closely after work shared here https://deliveroo.engineering/2018/10/22/how-to-experiment-rapidly-without-losing-rigour.html
+#
+
 library(shiny)
 library(gsDesign)
 library(formattable)
 library(shinyjs)
+library(shinythemes)
 
 shinyServer(function(input, output, session) {
   # VARIABLES ----
