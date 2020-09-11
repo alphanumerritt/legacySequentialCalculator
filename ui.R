@@ -1,3 +1,5 @@
+library(shinythemes)
+library(shinyjs)
 
 
 
@@ -346,7 +348,7 @@ ui <- fluidPage(
                   ),
                   
                   # TAILS INPUT ----
-                  # Input: tails considered in test (tbh I'm not sure how a 2-tail works with the futility boundary)
+                  # Input: tails considered in test 
                   div(class="inputRow",
                       div(class="inputLabs",
                           h5("Tails in the test (fixed)")
@@ -370,6 +372,37 @@ ui <- fluidPage(
                           " results are poor and a comeback is not likely while preserving power. ",
                           "Selecting 2-tail will produce",
                           " identical (symmetrical) upper and lower decision boundaries."
+                        )
+                      )
+                  ),
+                  
+                  # NONINFERIORITY INPUTS ----
+                  # Input: Option to add a non-inferiority margin to the test as well
+                  div(class="inputRow",
+                      div(class="inputLabs",
+                          h5("Non-inferiority Margin (%)")
+                      ),
+                      div(class='fixInputs',
+                          numericInput(
+                            "nonf",
+                            "",
+                            value = 0,
+                            min = 0,
+                            max = 50
+                          ),
+                          actionLink('nonfi', label = " ", icon = icon('info-circle')),
+                          hidden(actionLink('nonfx', label = " ", icon = icon('times'))),
+                          p(class="pinline","[Optional] ")
+                      ),
+                      hidden(
+                        p(
+                          id = 'nonfp',
+                          class = 'infoP',
+                          "If you want to demonstrate that the test variant is better than",
+                          "some negative margin below the control, enter it here as a ",
+                          "relative % of the control conversion rate. I.e. 0.5 means",
+                          "the test conversion rate will be compared to ControlCvr*0.995.",
+                          "Note: any value assigned will be ignored in a 2-tailed experiment."
                         )
                       )
                   ),

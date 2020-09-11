@@ -1,19 +1,20 @@
 # FIXED SAMPLE SIZE
-sampleSize <- function(conf, base, mde, tls, pwr) {
+sampleSize <- function(conf, base, mde, tls, pwr, nonf) {
+  cvrA = if (tls > 1) base else base*(1-nonf)
   cvrB = base * (1 + mde)
   alph = 1 - conf
   tls = as.integer(tls) #for some reason tls gets interpreted as a string w/o this in the gsDesign functions
   sides = if (tls > 1) "two.sided" else "one.sided"
   
   # FIXED SAMPLE ----
-  return(power.prop.test(n = NULL, p1 = base, p2 = cvrB,
+  return(power.prop.test(n = NULL, p1 = cvrA, p2 = cvrB,
                             sig.level = alph,
                             power = pwr,
                             alternative = sides)$n)
 }
 
 # SEQUENTIAL TEST DESIGN
-runDesign <- function(conf, base, mde, tls, pwr, checks) {
+runDesign <- function(conf, base, mde, tls, pwr, checks, nonf) {
   
   # VARIABLES ----
   cvrB = base * (1 + mde)
@@ -24,9 +25,10 @@ runDesign <- function(conf, base, mde, tls, pwr, checks) {
   k_checks <- length(checks) + 1
   sides = if (tls1 > 1) "two.sided" else "one.sided"
   testType = if (tls1 > 1) 2 else 4
+  cvrA = if (tls1 > 1) base else base*(1-nonf)
   
   # FIXED SAMPLE ----
-  n_fixed = power.prop.test(n = NULL, p1 = base, p2 = cvrB,
+  n_fixed = power.prop.test(n = NULL, p1 = cvrA, p2 = cvrB,
                             sig.level = alph,
                             power = pwr,
                             alternative = sides)$n

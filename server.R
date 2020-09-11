@@ -7,8 +7,6 @@
 library(shiny)
 library(gsDesign)
 library(formattable)
-library(shinyjs)
-library(shinythemes)
 
 shinyServer(function(input, output, session) {
   # VARIABLES ----
@@ -22,21 +20,35 @@ shinyServer(function(input, output, session) {
   cvsBlist <- c()
   nAlist <- c()
   nBlist <- c()
+  nonfM <- 0
   
+  # NON-INFERIORITY OPPS ----
+  # Sets nonfM variable on change of tails and nonf fields  
+  observeEvent(
+    c(input$tls, input$nonf), {
+      nonfM <<- if (input$tls == 1) input$nonf/100 else 0
+    }, ignoreNULL = FALSE, ignoreInit = TRUE
+  )
+  
+  # Disables/Enables Nonf field on change of tails field
+  observeEvent(input$tls, {toggleState('nonf')}, ignoreNULL = FALSE, ignoreInit = TRUE
+  )
+
   # FIXED RUNTIME ----
   output$fixedHorizon <- renderText({
     fixedInt <<- sampleSize(input$alpha/100,
               input$cvra/100,
               input$mde/100,
               input$tls,
-              input$pwr/100)*2
+              input$pwr/100,
+              input$nonf/100)*2
     fixedSample <- paste(comma(fixedInt, digits=0), 'total')
     fixedSample
   })
   
   # EST DURATION ----
   output$estDuration <- renderText({
-    dummy <- input$cvra + input$mde + as.numeric(input$tls) + input$pwr
+    dummy <- input$cvra + input$mde + as.numeric(input$tls) + input$pwr + input$nonf + input$alpha #this is here to force updates on field changes
     duration <- fixedInt / (input$traff / 7)
     duration <- paste(round(duration, digits=0),'days')
     duration
@@ -147,6 +159,20 @@ shinyServer(function(input, output, session) {
     
   })
   
+  # NONF INFO ----
+  observeEvent(input$nonfi, {
+    toggle(id = 'nonfp')
+    toggle(id = 'nonfx')
+    toggle(id = 'nonfi')
+    
+  })
+  
+  observeEvent(input$nonfx, {
+    toggle(id = 'nonfp')
+    toggle(id = 'nonfx')
+    toggle(id = 'nonfi')
+    
+  })
   # TECH BITS HIDE/SHOW ----
   observeEvent(input$techi, {
     toggle(id = 'techp')
@@ -296,7 +322,8 @@ shinyServer(function(input, output, session) {
                           input$mde/100,
                           input$tls,
                           input$pwr/100,
-                          checkpts2)
+                          checkpts2,
+                          input$nonf/100)
     
       # FORMAT OUTPUTS ----
       # formats sample outputs before going into the outputs
@@ -650,10 +677,14 @@ shinyServer(function(input, output, session) {
   # CALC RSLTS FUNCTION ----
   calcRslts <- function(a,b,c,d,index) {
       tryCatch({
+        print(nonfM)
+        nonfD <- a/b*nonfM
+        print(nonfD)
         zindex <- index
         h <- round(((c/d)/(a/b)-1)*100, digits = 2)
+        z <- round(-testBinomial(x1=a, x2=c, n1=b, n2=d, delta0 = nonfD), digits = 2)
         if (index < 2) { 
-        zlist <<- round(-testBinomial(x1=a, x2=c, n1=b, n2=d), digits = 2)
+        zlist <<- z
         nlist <<- d+b
         ilist <<- paste0('Chk',index,': ')
         cvsAlist <<- a
@@ -664,7 +695,7 @@ shinyServer(function(input, output, session) {
         } else if (index == 10) {
           
           adjIndex <- length(zlist) + 1
-          zlist[adjIndex] <<- round(-testBinomial(x1=a, x2=c, n1=b, n2=d), digits = 2)
+          zlist[adjIndex] <<- z
           nlist[adjIndex] <<- d+b
           ilist[adjIndex] <<- paste0('Chk',adjIndex,': ') 
           cvsAlist[adjIndex] <<- a
@@ -675,7 +706,7 @@ shinyServer(function(input, output, session) {
           
           } else {
           
-          zlist[index] <<- round(-testBinomial(x1=a, x2=c, n1=b, n2=d), digits = 2)
+          zlist[index] <<- z
           nlist[index] <<- d+b
           ilist[index] <<- paste0('Chk',index,': ')
           cvsAlist[index] <<- a
